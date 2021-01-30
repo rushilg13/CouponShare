@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg"/>
+    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/home">CouponShare</a>
+        <a class="active" href="/add">Add Coupon</a>
+        <a href="/about">About</a>
+        {% if logged_in == 1 %}
+            <a href="/logout">Log Out</a>
+        {% else %}
+            <a href="/login">Log in</a>
+        {% endif %}
+    </div>
+    <p style="color: aliceblue;">Hi, {{ fname }} </p>
+
+    <form action="{{ url_for('add') }}" method="POST" id="form3">
+
+        <label for="textbox1">Store/Company Name:</label>
+        {{ add_form.store }}
+        <label for="textbox2">Coupon Code:</label>
+        {{ add_form.code }}
+        <label for="textbox3">Valid Upto:</label>
+        {{ add_form.valid_upto }}
+        <label for="textbox4">Added By:</label>
+        {{ add_form.added_by }}
+        <label for="textbox5">Valid For:</label>
+        {{ add_form.valid_for }}
+        <label for="textbox6">Additional Details:</label>
+        {{ add_form.additional }}
+
+        {{add_form.sub}}
+    </form>
+</body>
+</html>

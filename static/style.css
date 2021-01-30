@@ -1,0 +1,89 @@
+/* Add a black background color to the top navigation */
+.topnav {
+    background-color: #292929;
+    overflow: hidden;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    background-color: #5F6368;
+    color: ivory;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav a.active {
+    background-color: #BB86FC;
+    color: white;
+  }
+
+  body{
+      background-color: #121212;
+  }
+
+  /* header{
+      color: #BB86FC;
+      text-align: center;
+      font-family: 'Holtwood One SC', serif;
+      font-size: 44px;
+  }
+
+  .post_box{
+      background-color: #292929;
+      margin: 5px;
+      color: ivory;
+  } */
+
+  .container{
+      margin-top: 30px;
+      background-color: #202124;
+      color: ivory;
+  }
+
+/* #new{
+    text-align: center;
+    color: ivory;
+    font-size: 38px;
+}
+.form_level{
+    color: red;
+    font-size: 20px;
+    display:flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    align-items: center;
+} 
+#button_sub{
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: 100px;
+    border-radius: 10%;
+    font-size: 28px;
+    background-color: #BB86FC;
+    color: ivory;
+    font-family: serif;
+}
+#button_sub:hover{
+    background-color: #00ff959d;
+    color: ivory;
+}
+
+#contact_table{
+    color: ivory;
+    background-color:#292929;
+    vertical-align: middle;
+    margin: auto;
+    width: 45%;
+    font-size: 20px;
+}
+*/
