@@ -58,7 +58,8 @@ def signup():
         else:
             if user_collection.count_documents({"Email": email}):
                 logged_in = 0
-                return "User already Exists!, Please login at localhost/login"
+                flash('User already Exists!, Please login')
+                return redirect(url_for('signup'))
 
             else:
                 logged_in = 1

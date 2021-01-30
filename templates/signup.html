@@ -20,6 +20,15 @@
             {{ form.pass1 }}
             
             {{form.sub}}
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul class=flashes>
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
         </form>
         <p>Already have an account? <a href="/login">Login Here</a></p>
     </div>
