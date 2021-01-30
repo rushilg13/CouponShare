@@ -16,5 +16,20 @@
         {% endif %}
     </div>
     <p style="color: aliceblue;">Hi, {{ fname }} </p>
+    <div style="color: aliceblue;">
+        {% for code in codes_all %}
+        <div style="background-color: rgb(107, 106, 106);">
+            Store/Company : {{ code.Store }} <br>
+            Added By : {{ code.Added_By }} <br>
+            Code : {{ code.Code }} <br>
+            Valid Upto : {{ code.Valid_Upto }} <br>
+            Categories Applicable : {% for Categories in code.Valid_For %} 
+                                    {{ Categories }},
+                                    {% endfor %}
+            <br>
+            Additional Details : {{ code.Additional_Details }}
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

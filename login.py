@@ -7,6 +7,7 @@ from wtforms.fields.html5 import EmailField
 from wtforms.widgets import TextArea
 from flask_pymongo import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Cant_say'
@@ -28,7 +29,7 @@ class AddForm(Form):
     code = StringField('code', validators=[DataRequired()])
     valid_upto = DateField('valid_upto', validators=[DataRequired()])
     added_by = StringField('added_by', validators=[DataRequired()])
-    valid_for = SelectMultipleField('valid_for', choices=['Footwear', 'Food', 'Clothes', 'Mobiles'],validators=[DataRequired()])
+    valid_for = SelectMultipleField('valid_for', choices=[('Mobile', 'Mobile'), ('Footwear', 'Footwear'), ('Clothes', 'Clothes')],validators=[DataRequired()])
     additional = StringField('additional', widget=TextArea())
     sub = SubmitField('Add Coupon')
 
@@ -37,6 +38,7 @@ CONNECTION_STRING = f"mongodb+srv://VIT_Admin:{db_password}@vitdiaries.tpuku.mon
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('CouponShare')
 user_collection = pymongo.collection.Collection(db, 'Users')
+code_collection = pymongo.collection.Collection(db, 'CouponCodes')
 
 logged_in = 0
 
@@ -68,6 +70,7 @@ def signup():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     global logged_in
+    global email
     logged_in = 0
     form_login = inputFormlogin()
     if request.method=="POST":
@@ -82,7 +85,7 @@ def login():
                 logged_in = 1
                 global fname
                 fname = user['First Name']
-                return render_template('index.html', fname = fname, lname = user['Last Name'], logged_in = logged_in)
+                return redirect(url_for('home'))
             else:
                 logged_in = 0
                 print("item is not existed")
@@ -95,7 +98,8 @@ def home():
     global logged_in
     global fname
     if logged_in == 1:
-        return render_template('index.html', logged_in = logged_in, fname = fname)
+        codes_all = code_collection.find()
+        return render_template('index.html', logged_in = logged_in, fname = fname, codes_all=codes_all)
     else:
         return redirect(url_for('login'))
 
@@ -115,8 +119,9 @@ def about():
         return render_template('about.html')
     else:
         return redirect(url_for('login'))
-@app.route('/add')
+@app.route('/add', methods=['POST', 'GET'])
 def add():
+    global fname
     add_form = AddForm()
     global logged_in
     if logged_in == 1:
@@ -126,12 +131,16 @@ def add():
             valid_upto = add_form.valid_upto.data
             added_by = add_form.added_by.data
             additional = add_form.additional.data
-            valid_for = add_form.valid_for.data
+            valid_for = request.form.getlist('valid_for')
+            print(store, code, valid_upto, added_by, additional, valid_for)
             if add_form.validate_on_submit():
                 return("Submitted")
             else:
-                return("Else happened")
-        return render_template('add.html')
+                list1 = str(valid_upto).split("-")
+                myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
+                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional})
+                return("Coupon Added to DB")
+        return render_template('add.html', add_form = add_form, fname=fname)
     else:
         return redirect(url_for('login'))
 
