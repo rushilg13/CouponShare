@@ -10,3 +10,9 @@ open browser and go to localhost:5000/signup<br>
 Create an account <br>
 Login via localhost:5000/login<br>
 Happy Saving!
+
+# Tech Stack
+MongoDB<br>
+Flask<br>
+HTML, CSS<br>
+
