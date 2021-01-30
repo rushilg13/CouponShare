@@ -115,8 +115,9 @@ def logout():
 @app.route('/about')
 def about():
     global logged_in
+    global fname
     if logged_in == 1:
-        return render_template('about.html')
+        return render_template('about.html', fname=fname, logged_in = logged_in)
     else:
         return redirect(url_for('login'))
 @app.route('/add', methods=['POST', 'GET'])
@@ -140,7 +141,7 @@ def add():
                 myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
                 code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional})
                 return("Coupon Added to DB")
-        return render_template('add.html', add_form = add_form, fname=fname)
+        return render_template('add.html', add_form = add_form, fname=fname, logged_in=logged_in)
     else:
         return redirect(url_for('login'))
 
