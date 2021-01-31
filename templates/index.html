@@ -33,6 +33,7 @@
     <div style="color: aliceblue;">
         {% for code in codes_all %}
         <div style="background-color: rgb(107, 106, 106);">
+            {% if code.Used %}
             Store/Company : {{ code.Store }} <br>
             Added By : {{ code.Added_By }} <br>
             Code : {{ code.Code }} <br>
@@ -43,6 +44,7 @@
             <br>
             Additional Details : {{ code.Additional_Details }}<br>
             <button> <a href="/CouponUsed">I'm Using This Coupon</a></button>
+            {% endif %}
         </div>
         <br>
         {% endfor %}

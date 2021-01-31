@@ -145,7 +145,7 @@ def add():
             else:
                 list1 = str(valid_upto).split("-")
                 myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
-                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional})
+                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional, "Not_Used": True})
                 Coupon_Redemptions += 1
                 user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
                 return redirect(url_for('home'))
@@ -155,16 +155,20 @@ def add():
 
 @app.route('/CouponUsed')
 def CouponUsed():
+    global logged_in
     global Coupon_Redemptions
     global email
-    Coupon_Redemptions -= 1
-    if Coupon_Redemptions <= 0:
-        Coupon_Redemptions = 0
-        user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
-        flash('You need to add more coupons to get Coupon_Redemption Points!')
+    if logged_in == 1:
+        Coupon_Redemptions -= 1
+        if Coupon_Redemptions <= 0:
+            Coupon_Redemptions = 0
+            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions, "Not_Used": True}});
+            flash('You need to add more coupons to get Coupon_Redemption Points!')
+        else:
+            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions, "Not_Used": False}});
+            flash('You have used a Coupon_Redemption Point')
     else:
-        user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
-        flash('You have used a Coupon_Redemption Point')
+        return redirect(url_for('login'))
     return redirect(url_for('home'))
 
 if __name__ == "__main__":
