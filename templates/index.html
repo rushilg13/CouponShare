@@ -16,6 +16,20 @@
         {% endif %}
     </div>
     <p style="color: aliceblue;">Hi, {{ fname }} </p>
+    <p style="color: aliceblue;"> Coupon Redemptions Remaining: {{ Coupon_Redemptions }} </p>
+    
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+      <div class="message" style="color: aliceblue;">
+        {{ message }}
+    </div>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
     <div style="color: aliceblue;">
         {% for code in codes_all %}
         <div style="background-color: rgb(107, 106, 106);">
@@ -27,7 +41,8 @@
                                     {{ Categories }},
                                     {% endfor %}
             <br>
-            Additional Details : {{ code.Additional_Details }}
+            Additional Details : {{ code.Additional_Details }}<br>
+            <button> <a href="/CouponUsed">I'm Using This Coupon</a></button>
         </div>
         <br>
         {% endfor %}

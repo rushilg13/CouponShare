@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import Form
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, validators, SubmitField, DateField, SelectMultipleField
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms import StringField, PasswordField, SubmitField, DateField, SelectMultipleField
+from wtforms.validators import DataRequired, Email
 from wtforms.fields.html5 import EmailField
 from wtforms.widgets import TextArea
 from flask_pymongo import pymongo
@@ -64,8 +64,8 @@ def signup():
             else:
                 logged_in = 1
                 cipher = generate_password_hash(pass1, method='sha256')
-                user_collection.insert_one({'First Name': fname, 'Last Name': lname, 'Email': email, 'Password': cipher})
-                return render_template('index.html', fname = fname, lname = lname, logged_in = logged_in)
+                user_collection.insert_one({'First Name': fname, 'Last Name': lname, 'Email': email, 'Password': cipher, 'Coupon_Redemptions' : 1})
+                return render_template('index.html', fname = fname, lname = lname, logged_in = logged_in, Coupon_Redemptions = 1)
     return render_template("signup.html", form=form)
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -85,6 +85,8 @@ def login():
                 print("item is existed")
                 logged_in = 1
                 global fname
+                global Coupon_Redemptions
+                Coupon_Redemptions = user['Coupon_Redemptions']
                 fname = user['First Name']
                 return redirect(url_for('home'))
             else:
@@ -98,9 +100,10 @@ def login():
 def home():
     global logged_in
     global fname
+    global Coupon_Redemptions
     if logged_in == 1:
         codes_all = code_collection.find()
-        return render_template('index.html', logged_in = logged_in, fname = fname, codes_all=codes_all)
+        return render_template('index.html', logged_in = logged_in, fname = fname, codes_all=codes_all, Coupon_Redemptions= Coupon_Redemptions)
     else:
         return redirect(url_for('login'))
 
@@ -117,8 +120,9 @@ def logout():
 def about():
     global logged_in
     global fname
+    global Coupon_Redemptions
     if logged_in == 1:
-        return render_template('about.html', fname=fname, logged_in = logged_in)
+        return render_template('about.html', fname=fname, logged_in = logged_in, Coupon_Redemptions=Coupon_Redemptions)
     else:
         return redirect(url_for('login'))
 @app.route('/add', methods=['POST', 'GET'])
@@ -126,6 +130,7 @@ def add():
     global fname
     add_form = AddForm()
     global logged_in
+    global Coupon_Redemptions
     if logged_in == 1:
         if request.method == "POST":
             store = add_form.store.data
@@ -141,12 +146,26 @@ def add():
                 list1 = str(valid_upto).split("-")
                 myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
                 code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional})
-                return("Coupon Added to DB")
-        return render_template('add.html', add_form = add_form, fname=fname, logged_in=logged_in)
+                Coupon_Redemptions += 1
+                user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
+                return redirect(url_for('home'))
+        return render_template('add.html', add_form = add_form, fname=fname, logged_in=logged_in, Coupon_Redemptions=Coupon_Redemptions)
     else:
         return redirect(url_for('login'))
 
-
+@app.route('/CouponUsed')
+def CouponUsed():
+    global Coupon_Redemptions
+    global email
+    Coupon_Redemptions -= 1
+    if Coupon_Redemptions <= 0:
+        Coupon_Redemptions = 0
+        user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
+        flash('You need to add more coupons to get Coupon_Redemption Points!')
+    else:
+        user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
+        flash('You have used a Coupon_Redemption Point')
+    return redirect(url_for('home'))
 
 if __name__ == "__main__":
     app.run(debug=True)
