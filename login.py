@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_wtf import Form
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField, SelectMultipleField
@@ -40,98 +40,85 @@ db = client.get_database('CouponShare')
 user_collection = pymongo.collection.Collection(db, 'Users')
 code_collection = pymongo.collection.Collection(db, 'CouponCodes')
 
-logged_in = 0
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     form = inputForm()
-    global logged_in
-    global fname
     if request.method=="POST":
         fname = form.fname.data
         lname = form.lname.data
         email = form.email.data
         pass1 = form.pass1.data
-        # print(fname, lname, email, pass1)
-        if form.validate_on_submit():
-            return("Submitted")
-        else:
+        print(fname, lname, email, pass1)
+        if request.method == 'POST':
             if user_collection.count_documents({"Email": email}):
-                logged_in = 0
                 flash('User already Exists!, Please login')
-                return redirect(url_for('signup'))
-
+                return redirect(url_for('login'))
             else:
-                logged_in = 1
                 cipher = generate_password_hash(pass1, method='sha256')
                 user_collection.insert_one({'First Name': fname, 'Last Name': lname, 'Email': email, 'Password': cipher, 'Coupon_Redemptions' : 1})
-                return render_template('index.html', fname = fname, lname = lname, logged_in = logged_in, Coupon_Redemptions = 1)
+                session['email'] = email
+                return render_template('index.html', fname = fname, lname = lname, Coupon_Redemptions = 1)
+        else:
+            return redirect('signup')
     return render_template("signup.html", form=form)
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    global logged_in
-    global email
-    logged_in = 0
     form_login = inputFormlogin()
     if request.method=="POST":
         email = form_login.email.data
         pass1 = form_login.pass1.data
-        if form_login.validate_on_submit():
-            return("Submitted")
-        else:
+        if request.method == 'POST':
             user = user_collection.find_one({"Email":email})
             if check_password_hash(user['Password'], pass1):
-                print("item is existed")
-                logged_in = 1
-                global fname
-                global Coupon_Redemptions
-                Coupon_Redemptions = user['Coupon_Redemptions']
-                fname = user['First Name']
+                print("item exists")
+                session['email'] = email
+                # Coupon_Redemptions = user['Coupon_Redemptions']
+                # fname = user['First Name']
                 return redirect(url_for('home'))
             else:
-                logged_in = 0
-                print("item is not existed")
+                print("item does not exist")
                 flash('Invalid Credentials')
                 return redirect('/login')
     return render_template("login.html", form_login=form_login)
 
 @app.route('/home')
 def home():
-    global logged_in
-    global fname
-    global Coupon_Redemptions
-    if logged_in == 1:
+    if 'email' in session:
         codes_all = code_collection.find()
-        return render_template('index.html', logged_in = logged_in, fname = fname, codes_all=codes_all, Coupon_Redemptions= Coupon_Redemptions)
+        email = session['email']
+        user = user_collection.find_one({"Email":email})
+        return render_template('index.html', fname = user['First Name'], codes_all=codes_all, Coupon_Redemptions= user['Coupon_Redemptions'])
     else:
         return redirect(url_for('login'))
 
+@app.route('/')
+def landing():
+    return render_template('landing.html')
+
 @app.route('/logout')
 def logout():
-    global logged_in
-    if logged_in == 1:
-        logged_in = 0
+    if 'email' in session:
+        session.pop('email', None)
         return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
 @app.route('/about')
 def about():
-    global logged_in
-    global fname
-    global Coupon_Redemptions
-    if logged_in == 1:
-        return render_template('about.html', fname=fname, logged_in = logged_in, Coupon_Redemptions=Coupon_Redemptions)
+    if 'email' in session:
+        email = session['email']
+        user = user_collection.find_one({"Email":email})
+        return render_template('about.html', fname=user['First Name'], Coupon_Redemptions=user['Coupon_Redemptions'])
     else:
         return redirect(url_for('login'))
 @app.route('/add', methods=['POST', 'GET'])
 def add():
-    global fname
     add_form = AddForm()
-    global logged_in
-    global Coupon_Redemptions
-    if logged_in == 1:
+    if 'email' in session:
+        email = session['email']
+        user = user_collection.find_one({"Email":email})
         if request.method == "POST":
             store = add_form.store.data
             code = add_form.code.data
@@ -140,25 +127,22 @@ def add():
             additional = add_form.additional.data
             valid_for = request.form.getlist('valid_for')
             print(store, code, valid_upto, added_by, additional, valid_for)
-            if add_form.validate_on_submit():
-                return("Submitted")
-            else:
+            if request.method=="POST":
                 list1 = str(valid_upto).split("-")
                 myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
                 code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional, "Not_Used": True})
                 Coupon_Redemptions += 1
                 user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
                 return redirect(url_for('home'))
-        return render_template('add.html', add_form = add_form, fname=fname, logged_in=logged_in, Coupon_Redemptions=Coupon_Redemptions)
+            else:
+                return redirect(url_for('login'))
+        return render_template('add.html', add_form = add_form, fname=user['First Name'], Coupon_Redemptions=user['Coupon_Redemptions'])
     else:
         return redirect(url_for('login'))
 
 @app.route('/CouponUsed')
 def CouponUsed():
-    global logged_in
-    global Coupon_Redemptions
-    global email
-    if logged_in == 1:
+    if 'email' in session:
         Coupon_Redemptions -= 1
         if Coupon_Redemptions <= 0:
             Coupon_Redemptions = 0

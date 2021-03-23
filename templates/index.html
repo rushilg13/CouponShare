@@ -9,7 +9,7 @@
         <a class="active" href="/home">CouponShare</a>
         <a href="/add">Add Coupon</a>
         <a href="/about">About</a>
-        {% if logged_in == 1 %}
+        {% if 'email' in session %}
             <a href="/logout">Log Out</a>
         {% else %}
             <a href="/login">Log in</a>
@@ -33,7 +33,7 @@
     <div style="color: aliceblue;">
         {% for code in codes_all %}
         <div style="background-color: rgb(107, 106, 106);">
-            {% if code.Used %}
+            {% if code.Used == 0 %}
             Store/Company : {{ code.Store }} <br>
             Added By : {{ code.Added_By }} <br>
             Code : {{ code.Code }} <br>
