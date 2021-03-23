@@ -28,7 +28,6 @@ class AddForm(Form):
     store = StringField('store', validators=[DataRequired()])
     code = StringField('code', validators=[DataRequired()])
     valid_upto = DateField('valid_upto', validators=[DataRequired()])
-    added_by = StringField('added_by', validators=[DataRequired()])
     valid_for = SelectMultipleField('valid_for', choices=[('Mobile', 'Mobile'), ('Footwear', 'Footwear'), ('Clothes', 'Clothes')],validators=[DataRequired()])
     additional = StringField('additional', widget=TextArea())
     sub = SubmitField('Add Coupon')
@@ -123,15 +122,16 @@ def add():
             store = add_form.store.data
             code = add_form.code.data
             valid_upto = add_form.valid_upto.data
-            added_by = add_form.added_by.data
             additional = add_form.additional.data
             valid_for = request.form.getlist('valid_for')
-            print(store, code, valid_upto, added_by, additional, valid_for)
+            now = datetime.date.today()
+            now = now.strftime("%d/%m/%Y")
+            print(store, code, valid_upto, additional, valid_for)
             if request.method=="POST":
                 list1 = str(valid_upto).split("-")
                 myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]))
-                myDateObject = myDateObject.strftime('%m/%d/%Y')
-                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional, "Used": 0})
+                myDateObject = myDateObject.strftime('%d/%m/%Y')
+                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": (user['First Name']+" "+user['Last Name']), "Valid_For": valid_for, "Additional_Details": additional, "Used": 0, "Added_On":now})
                 user = user_collection.find_one({"Email":session['email']})
                 user['Coupon_Redemptions'] += 1
                 user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : user['Coupon_Redemptions']}});
@@ -154,7 +154,7 @@ def CouponUsed():
             flash('You need to add more coupons to get Coupon Redemption Points!')
         else:
             user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : user['Coupon_Redemptions']}});
-            flash('You have used a Coupon_Redemption Point')
+            flash('You have used a Coupon Redemption Point')
     else:
         return redirect(url_for('login'))
     return redirect(url_for('home'))
