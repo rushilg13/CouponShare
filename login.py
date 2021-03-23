@@ -129,10 +129,12 @@ def add():
             print(store, code, valid_upto, added_by, additional, valid_for)
             if request.method=="POST":
                 list1 = str(valid_upto).split("-")
-                myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]), 0 , 0)
-                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional, "Not_Used": True})
-                Coupon_Redemptions += 1
-                user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions}});
+                myDateObject = datetime.datetime(int(list1[0]),int(list1[1]),int(list1[2]))
+                myDateObject = myDateObject.strftime('%m/%d/%Y')
+                code_collection.insert_one({"Email":email, "Store":store, "Code":code, "Valid_Upto":myDateObject, "Added_By": added_by, "Valid_For": valid_for, "Additional_Details": additional, "Used": 0})
+                user = user_collection.find_one({"Email":session['email']})
+                user['Coupon_Redemptions'] += 1
+                user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : user['Coupon_Redemptions']}});
                 return redirect(url_for('home'))
             else:
                 return redirect(url_for('login'))
@@ -143,13 +145,15 @@ def add():
 @app.route('/CouponUsed')
 def CouponUsed():
     if 'email' in session:
-        Coupon_Redemptions -= 1
-        if Coupon_Redemptions <= 0:
-            Coupon_Redemptions = 0
-            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions, "Not_Used": True}});
-            flash('You need to add more coupons to get Coupon_Redemption Points!')
+        user = user_collection.find_one({"Email":session['email']})
+        email = session['email']
+        user['Coupon_Redemptions'] -= 1
+        if user['Coupon_Redemptions'] <= 0:
+            user['Coupon_Redemptions'] = 0
+            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : user['Coupon_Redemptions']}});
+            flash('You need to add more coupons to get Coupon Redemption Points!')
         else:
-            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : Coupon_Redemptions, "Not_Used": False}});
+            user_collection.update_one({"Email":email},{"$set": {"Coupon_Redemptions" : user['Coupon_Redemptions']}});
             flash('You have used a Coupon_Redemption Point')
     else:
         return redirect(url_for('login'))
