@@ -32,7 +32,7 @@ class AddForm(Form):
     additional = StringField('additional', widget=TextArea())
     sub = SubmitField('Add Coupon')
 
-db_password = input("Password for database is:")
+db_password = "pizza"# input("Password for database is:")
 CONNECTION_STRING = f"mongodb+srv://VIT_Admin:{db_password}@vitdiaries.tpuku.mongodb.net/CouponShare?retryWrites=true&w=majority"
 client = pymongo.MongoClient(CONNECTION_STRING)
 db = client.get_database('CouponShare')
