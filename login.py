@@ -28,7 +28,7 @@ class AddForm(Form):
     store = StringField('store', validators=[DataRequired()])
     code = StringField('code', validators=[DataRequired()])
     valid_upto = DateField('valid_upto', validators=[DataRequired()])
-    valid_for = SelectMultipleField('valid_for', choices=[('Mobile', 'Mobile'), ('Footwear', 'Footwear'), ('Clothes', 'Clothes')],validators=[DataRequired()])
+    valid_for = SelectMultipleField('valid_for', choices=[('Mobile', 'Mobile'), ('Footwear', 'Footwear'), ('Clothes', 'Clothes'), ('Pantry', 'Pantry'), ('Electronics', 'Electronics')],validators=[DataRequired()])
     additional = StringField('additional', widget=TextArea())
     sub = SubmitField('Add Coupon')
 
