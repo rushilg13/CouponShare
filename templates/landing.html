@@ -1,45 +1,22 @@
 <html>
-<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 <style>
     body {
         background-image: linear-gradient(to bottom right, black, black, rgb(12, 5, 66), #BB86FC);
-        font-family: Roboto;
+        font-family: 'Poppins', sans-serif;
         color: white;
         line-height: 1.5;
         width: 100%;
-
     }
 
-    .header {
-        overflow: hidden;
-        background: transparent;
-        padding: 20px 10px;
-    }
-
-    .header a {
-        float: left;
-        color: white;
-        text-align: center;
-        padding: 12px;
-        text-decoration: none;
-        font-size: 18px;
-        line-height: 25px;
-        border-radius: 4px;
-        padding-right: 40px;
-    }
-
-    .header a.logo {
-        font-size: 35px;
-
-        letter-spacing: 2px;
-    }
-
-    .header .active {
-        text-decoration: line-through;
-    }
-
-    .header-right {
-        float: right;
+    .midnav {
+    margin: 10px;
+    padding: 10px;
+    background-image: linear-gradient(white, white);
+    border-radius: 10px;
     }
 
     @media screen and (max-width: 500px) {
@@ -54,36 +31,106 @@
         }
     }
 
-    #content {
+    #row {
         padding-left: 50px;
+        display: flex;
+        font-size: large;
     }
 
-    #content a {
+    #row a {
         text-decoration: underline;
         text-underline-position: under;
         font-size: 18px;
         color: #BB86FC;
     }
+    #col1 {
+        width: 70%;
+    }
+    #col2 {
+        width: 30%;
+        float: right;
+    }
+
+    .navbar {
+  padding-top: 25px;
+  font-family: "Quicksand", sans-serif;
+  display: flex;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  padding: 40px;
+  list-style: none;
+}
+
+.btnlogin {
+  color: #f1f1f1;
+  border-style: none;
+  border-radius: 9px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #BB86FC;
+  font-family: "Quicksand", sans-serif;
+}
 </style>
 
 <body>
-    <div class="header">
+    <nav class="navbar">
+        <div>
+          <a href="#"><img class="imgabout image-logo" src='../static/logo.svg' width="225" height="40" alt="Logo" /></a>
+        </div>
+        <div class="midnav">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/About">About</a>
+                </li>
+                <li>
+                    <a href="/contact">Contact</a>
+                </li>
+              </ul>
+        </div>
+        <div>
+            <a href='/login'>
+            <button class="btnlogin">
+                Login
+            </button>
+          </a>
+        </div>
+    </nav>
+    <!-- <div class="header">
         <a href="#home">HOME</a>
         <a href="/login">LOGIN</a>
         <a href="/signup">SIGNUP</a>
         <a href="#about">ABOUT US</a>
         <a href="#faq">FAQ</a>
-    </div><br><br><br>
+    </div><br><br><br> -->
 
-    <div id="content" width="25%">
-        <p style="font-size: 72px; letter-spacing: 5px;"><b>CouponShare</b><br></p>
-        <!-- <p style="font-size: 30px;">LOREM IPSUM</p><br> -->
-        <p width="25%">
-            A website for people to share the details of coupons of websites and stores that they wont be using.<br>
-            Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.<br>
-            Keep Adding coupons to redeem and avail discounts! <br><br>
-            Made with ❤️ by Rushil Goel <br>
-        </p><br>
+    <div id="row">
+        <div id="col1">
+            <p style="font-size: 72px; letter-spacing: 5px;"><b>CouponShare</b><br></p>
+            <p width="25%">
+                A website for people to share the details of coupons of websites and stores that they wont be using.<br>
+                Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.<br>
+                Keep Adding coupons to redeem and avail discounts! <br><br>
+                Made with ❤️ by Rushil Goel <br>
+            </p><br>
+        </div>
+
+        <div id="col2">
+            <img src="https://burgerbaeclothing.com/wp-content/plugins/woocommerce-smart-coupons/assets/images/discount-coupon.svg" width="400" height="400">
+        </div>
+
     </div><br><br>
 
 </body>
