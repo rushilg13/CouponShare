@@ -1,19 +1,111 @@
 <html lang="en">
 <head>
     <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg"/>
-    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 </head>
 
+<style>
+
+.navbar {
+  padding-top: 25px;
+  font-family: "Quicksand", sans-serif;
+  display: flex;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  padding: 40px;
+  list-style: none;
+}
+
+.midnav {
+    margin: 10px;
+    padding: 10px;
+    background-image: linear-gradient(white, white);
+    border-radius: 10px;
+    }
+
+.btnlogin {
+  color: #f1f1f1;
+  border-style: none;
+  border-radius: 9px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #BB86FC;
+  font-family: "Quicksand", sans-serif;
+}
+footer {
+    text-align: center;
+}
+
+body{
+      background-color: #121212;
+  }
+
+.container {
+  color: white;
+  background-color: #292929;
+  text-align: center;
+  font-size: large;
+}
+</style>
 
 <body>
+  <nav class="navbar">
+    <div>
+      <a href="#"><img class="imgabout image-logo" src='../static/logo.svg' width="225" height="40" alt="Logo" /></a>
+    </div>
+    <div class="midnav">
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="/About">About</a>
+            </li>
+            <li>
+                <a href="/contact">Contact</a>
+            </li>
+          </ul>
+    </div>
+    <div>
+        <a href='/login'>
+        <button class="btnlogin">
+            Login
+        </button>
+      </a>
+    </div>
+</nav>
+
     <div class="container">
+      <h1 style="text-align: center;"> <i class="fas fa-sign-out-alt"></i> Login</h1> <br>
         <form action="{{ url_for('login') }}" method="POST" id="form2">
             {{ form_login.csrf_token }}
 
-            <label for="textbox3">Email</label>
-            {{ form_login.email }}
-            <label for="textbox4">Password</label>
-            {{ form_login.pass1 }}
+            <table style="color: white; margin-left: auto; margin-right: auto;">
+              <tr>
+                <td>
+                  <label for="textbox3">Email</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {{ form_login.email }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="textbox4">Password</label>
+                  {{ form_login.pass1 }}
+                </td>
+              </tr>
+            </table>
+
             
             {{form_login.sub}}
 
