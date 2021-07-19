@@ -1,8 +1,8 @@
 # CouponShare
-            A website for people to share the details of coupons of websites and stores that they wont be using.<br>
-            Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.<br>
-            Keep Adding coupons to redeem and avail discounts! <br><br>
-            Made with ❤️ by Rushil Goel <br>
+A website for people to share the details of coupons of websites and stores that they wont be using.<br>
+Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.<br>
+Keep Adding coupons to redeem and avail discounts! <br><br>
+Made with ❤️ by Rushil Goel <br>
 
 # Deployed at
 https://coupon-share.herokuapp.com/
