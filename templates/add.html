@@ -1,7 +1,8 @@
 <html lang="en">
+
 <head>
-    <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg"/>
-    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg" />
+    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
 </head>
 
 <body>
@@ -10,9 +11,9 @@
         <a class="active" href="/add">Add Coupon</a>
         <a href="/about">About</a>
         {% if 'email' in session %}
-            <a href="/logout">Log Out</a>
+        <a href="/logout">Log Out</a>
         {% else %}
-            <a href="/login">Log in</a>
+        <a href="/login">Log in</a>
         {% endif %}
     </div>
     <p style="color: aliceblue;">Hi, {{ fname }} </p>
@@ -40,4 +41,5 @@
         {{add_form.sub}}
     </form>
 </body>
+
 </html>
