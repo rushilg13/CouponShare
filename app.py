@@ -100,6 +100,10 @@ def landing():
 def About_us():
     return render_template('about_us.html')
 
+@app.route('/contact')
+def Contact():
+    return render_template('contact.html')
+
 @app.route('/logout')
 def logout():
     if 'email' in session:
