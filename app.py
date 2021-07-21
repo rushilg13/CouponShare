@@ -112,6 +112,7 @@ def about():
         return render_template('about.html', fname=user['First Name'], Coupon_Redemptions=user['Coupon_Redemptions'])
     else:
         return redirect(url_for('login'))
+        
 @app.route('/add', methods=['POST', 'GET'])
 def add():
     add_form = AddForm()
