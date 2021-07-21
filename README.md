@@ -1,8 +1,10 @@
 # CouponShare
-A website for people to share the details of coupons of websites and stores that they wont be using.<br>
-Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.<br>
-Keep Adding coupons to redeem and avail discounts! <br><br>
-Made with ❤️ by Rushil Goel <br>
+CouponShare is a matchmaking website for people with coupons that they would not be using and for people who wants to avail discounts by finding right coupons for themselves.
+CouponShare Uses a basic point based system. Each coupon added awards +1 point and each redemption awards -1 point.
+You simply need to Signup/Login and you will be awarded +1 point that can be used to unlock a coupon and will subsequently be awarded -1 points.
+Each time you add a new valid coupon, you are awarded with +1 point.
+Keep Adding coupons to redeem and avail heavy discounts!
+<br>  Made with ❤️ by Rushil Goel <br>
 
 # Deployed at
 https://coupon-share.herokuapp.com/
