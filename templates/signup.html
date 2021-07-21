@@ -1,62 +1,64 @@
 <html lang="en">
+
 <head>
-    <!-- <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg"/> -->
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <!-- <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg"/> -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 </head>
 
 <style>
+  .navbar {
+    padding-top: 25px;
+    font-family: "Quicksand", sans-serif;
+    display: flex;
+  }
 
-.navbar {
-  padding-top: 25px;
-  font-family: "Quicksand", sans-serif;
-  display: flex;
-}
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
+  li {
+    display: inline;
+    padding: 40px;
+    list-style: none;
+  }
 
-li {
-  display: inline;
-  padding: 40px;
-  list-style: none;
-}
-
-.midnav {
+  .midnav {
     margin: 10px;
     padding: 10px;
     background-image: linear-gradient(white, white);
     border-radius: 10px;
-    }
-
-.btnlogin {
-  color: #f1f1f1;
-  border-style: none;
-  border-radius: 9px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #BB86FC;
-  font-family: "Quicksand", sans-serif;
-}
-footer {
-    text-align: center;
-}
-
-body{
-      background-color: #121212;
   }
 
-.container {
-  color: white;
-  background-color: #292929;
-  text-align: center;
-  font-size: large;
-}
+  .btnlogin {
+    color: #f1f1f1;
+    border-style: none;
+    border-radius: 9px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #BB86FC;
+    font-family: "Quicksand", sans-serif;
+  }
+
+  footer {
+    text-align: center;
+  }
+
+  body {
+    background-color: #121212;
+  }
+
+  .container {
+    color: white;
+    background-color: #292929;
+    text-align: center;
+    font-size: large;
+  }
 </style>
 
 <body>
@@ -65,30 +67,30 @@ body{
       <a href="#"><img class="imgabout image-logo" src='../static/logo.svg' width="225" height="40" alt="Logo" /></a>
     </div>
     <div class="midnav">
-        <ul>
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li>
-                <a href="/About">About</a>
-            </li>
-            <li>
-                <a href="/contact">Contact</a>
-            </li>
-          </ul>
+      <ul>
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li>
+          <a href="/About">About</a>
+        </li>
+        <li>
+          <a href="/contact">Contact</a>
+        </li>
+      </ul>
     </div>
     <div>
-        <a href='/login'>
+      <a href='/login'>
         <button class="btnlogin">
-            Login
+          Login
         </button>
       </a>
     </div>
-</nav>
+  </nav>
 
-<div class="container">
-  <h1 style="text-align: center;"> <i class="fas fa-sign-out-alt"></i> Signup</h1> <br>
-  <form action="{{ url_for('signup') }}" method="POST" id="form1">
+  <div class="container">
+    <h1 style="text-align: center;"> <i class="fas fa-sign-out-alt"></i> Signup</h1> <br>
+    <form action="{{ url_for('signup') }}" method="POST" id="form1">
       {{ form.csrf_token }}
 
       <label for="textbox1">First Name</label>
@@ -99,20 +101,20 @@ body{
       {{ form.email }} <br>
       <label for="textbox4">Password</label> &nbsp;
       {{ form.pass1 }} <br><br>
-      
+
       {{form.sub}}
       {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul class=flashes>
+      <ul class=flashes>
         {% for message in messages %}
-          {{ message }}
+        {{ message }}
         {% endfor %}
-        </ul>
+      </ul>
       {% endif %}
-    {% endwith %}
-  </form>
-  <p>Already have an account? <a href="/login">Login Here</a></p>
-</div>
+      {% endwith %}
+    </form>
+    <p>Already have an account? <a href="/login">Login Here</a></p>
+  </div>
 </body>
-</html>
 
+</html>
