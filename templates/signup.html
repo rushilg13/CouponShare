@@ -8,6 +8,10 @@
 </head>
 
 <style>
+  * {
+    margin: auto;
+  }
+
   .navbar {
     padding-top: 25px;
     font-family: "Quicksand", sans-serif;
@@ -50,14 +54,24 @@
   }
 
   body {
-    background-color: #121212;
+    background-image: linear-gradient(to bottom right, black, black, rgb(12, 5, 66), #BB86FC);
+    color: white;
+    line-height: 1.5;
+    width: 100%;
   }
 
-  .container {
-    color: white;
-    background-color: #292929;
-    text-align: center;
-    font-size: large;
+  .content {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 </style>
 
@@ -88,32 +102,63 @@
     </div>
   </nav>
 
-  <div class="container">
+  <div class="container content">
     <h1 style="text-align: center;"> <i class="fas fa-sign-out-alt"></i> Signup</h1> <br>
     <form action="{{ url_for('signup') }}" method="POST" id="form1">
       {{ form.csrf_token }}
 
-      <label for="textbox1">First Name</label>
-      {{ form.fname }} <br>
-      <label for="textbox2">Last Name</label>
-      {{ form.lname }} <br>
-      <label for="textbox3">Email</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      {{ form.email }} <br>
-      <label for="textbox4">Password</label> &nbsp;
-      {{ form.pass1 }} <br><br>
+      <table style="margin-left: auto; margin-right: auto;">
+        <tr>
+          <td>
+            <label for="textbox1">First Name</label>
+          </td>
+          <td>
+            {{ form.fname }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="textbox2">Last Name</label>
+          </td>
+          <td>
+            {{ form.lname }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="textbox3">Email</label>
+          </td>
+          <td>
+            {{ form.email }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="textbox4">Password</label>
+          </td>
+          <td>
+            {{ form.pass1 }}
+          </td>
+        </tr>
+      </table>
 
-      {{form.sub}}
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class=flashes>
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
+      <br>
+
+      <div style="text-align: center;">
+        {{form.sub}}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes style="color: red;">
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+      </div>
+
     </form>
-    <p>Already have an account? <a href="/login">Login Here</a></p>
+    <p style="text-align: center;">Already have an account? <a href="/login">Login Here</a></p>
   </div>
 </body>
 
