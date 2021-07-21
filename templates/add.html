@@ -2,44 +2,173 @@
 
 <head>
     <link rel="shortcut icon" type="image/jpg" href="../static/blue.jpg" />
-    <link type="text/css" rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 </head>
 
-<body>
-    <div class="topnav">
-        <a href="/home">CouponShare</a>
-        <a class="active" href="/add">Add Coupon</a>
-        <a href="/about">About</a>
-        {% if 'email' in session %}
-        <a href="/logout">Log Out</a>
-        {% else %}
-        <a href="/login">Log in</a>
-        {% endif %}
-    </div>
-    <p style="color: aliceblue;">Hi, {{ fname }} </p>
-    <p style="color: aliceblue;"> Coupon Redemptions Remaining: {{ Coupon_Redemptions }} </p>
+<style>
+        * {
+        margin: auto;
+    }
 
+    .navbar {
+        padding-top: 25px;
+        font-family: "Quicksand", sans-serif;
+        display: flex;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        display: inline;
+        padding: 40px;
+        list-style: none;
+    }
+
+    .midnav {
+        margin: 10px;
+        padding: 10px;
+        margin-right: 10px;
+        background-image: linear-gradient(white, white);
+        border-radius: 10px;
+    }
+
+    .btnlogin {
+        color: #f1f1f1;
+        border-style: none;
+        border-radius: 9px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: #BB86FC;
+        font-family: "Quicksand", sans-serif;
+    }
+
+    body {
+        background-image: linear-gradient(to bottom right, black, black, rgb(12, 5, 66), #BB86FC);
+        color: white;
+        line-height: 1.5;
+        width: 100%;
+        font-size: large;
+    }
+
+    .content {
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 10px;
+        text-align: center;
+        width: 600px;
+    }
+</style>
+
+<body>
+    <nav class="navbar">
+        <div>
+            <a href="#"><img class="imgabout image-logo"
+                    src='https://img.favpng.com/3/16/17/coupon-computer-icons-discounts-and-allowances-voucher-e-commerce-png-favpng-0WeMi3z04SmG2g9echMZe0Kxc.jpg'
+                    width="125" height="40" alt="Logo" /></a>
+        </div>
+        <div class="midnav">
+            <ul>
+                <li>
+                    <a class="active" href="/home">Home</a>
+                </li>
+                <li>
+                    <a href="/add">Add Coupon</a>
+                </li>
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                {% if 'email' not in session %}
+                <a href="/login">Log In</a>
+                {% endif %}
+                <li>
+                    <a href="/contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <a href='/logout'>
+                <button class="btnlogin">
+                    Logout
+                </button>
+            </a>
+        </div>
+    </nav>
+
+    <div style="text-align: center;">
+        <p>Hi, {{ fname }} </p>
+        <p>Coupon Redemptions Remaining: {{ Coupon_Redemptions }} </p>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes style="color: red;">
+            {% for message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container content">
     <form action="{{ url_for('add') }}" method="POST" id="form3" style="color: aliceblue;">
 
-        <label for="textbox1">Store/Company Name:</label>
-        {{ add_form.store }}
-        <br><br>
-        <label for="textbox2">Coupon Code:</label>
-        {{ add_form.code }}
-        <br><br>
-        <label for="textbox3">Valid Upto:</label>
-        {{ add_form.valid_upto(placeholder="2020-07-27") }}
-        <br><br>
-        <br><br>
-        <label for="textbox5">Valid For:</label>
-        {{ add_form.valid_for }} Use ctrl to select multiple
-        <br><br>
-        <label for="textbox6">Additional Details:</label>
-        {{ add_form.additional }}
-        <br><br>
-
+        <table>
+            <tr>
+                <td>
+                    <label for="textbox1">Store/Company Name:</label>
+                </td>
+                <td>
+                    {{ add_form.store }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="textbox2">Coupon Code:</label>
+                </td>
+                <td>
+                    {{ add_form.code }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="textbox3">Valid Upto:</label>
+                </td>
+                <td>
+                    {{ add_form.valid_upto(placeholder="2021-07-22") }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="textbox5">Valid For:</label>
+                </td>
+                <td>
+                    {{ add_form.valid_for }} Use ctrl to select multiple
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="textbox6">Additional Details:</label>
+                </td>
+                <td>
+                    {{ add_form.additional }}
+                </td>
+            </tr>
+        </table>
+        <br>
         {{add_form.sub}}
     </form>
+    </div>
 </body>
 
 </html>
