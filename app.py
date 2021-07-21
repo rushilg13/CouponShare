@@ -96,6 +96,10 @@ def home():
 def landing():
     return render_template('landing.html')
 
+@app.route('/about_us')
+def About_us():
+    return render_template('about_us.html')
+
 @app.route('/logout')
 def logout():
     if 'email' in session:
