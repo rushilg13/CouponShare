@@ -8,6 +8,10 @@
 </head>
 
 <style>
+  * {
+    margin: auto;
+  }
+
   .navbar {
     padding-top: 25px;
     font-family: "Quicksand", sans-serif;
@@ -56,17 +60,27 @@
     width: 100%;
   }
 
-  .container {
-    color: white;
-    text-align: center;
-    font-size: large;
+  .content {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
   }
 </style>
 
 <body>
   <nav class="navbar">
     <div>
-      <a href="#"><img class="imgabout image-logo" src='../static/logo.svg' width="225" height="40" alt="Logo" /></a>
+      <a href="#"><img class="imgabout image-logo"
+          src='https://img.favpng.com/3/16/17/coupon-computer-icons-discounts-and-allowances-voucher-e-commerce-png-favpng-0WeMi3z04SmG2g9echMZe0Kxc.jpg'
+          width="125" height="40" alt="Logo" /></a>
     </div>
     <div class="midnav">
       <ul>
@@ -90,41 +104,46 @@
     </div>
   </nav>
 
-  <div class="container">
-    <h1 style="text-align: center;"> <i class="fas fa-sign-out-alt"></i> Login</h1> <br>
+  <div class="container content">
+    <h1 style="text-align: center;"> <i class="fas fa-sign-in-alt"></i> Login</h1> <br>
     <form action="{{ url_for('login') }}" method="POST" id="form2">
       {{ form_login.csrf_token }}
 
       <table style="color: white; margin-left: auto; margin-right: auto;">
         <tr>
           <td>
-            <label for="textbox3">Email</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label for="textbox3">Email</label>
+          </td>
+          <td>
             {{ form_login.email }}
           </td>
         </tr>
         <tr>
           <td>
             <label for="textbox4">Password</label>
+          </td>
+          <td>
             {{ form_login.pass1 }}
           </td>
         </tr>
       </table>
-
-
-      {{form_login.sub}}
-
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class=flashes>
-        {% for message in messages %}
-        {{ message }}
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
+      <br>
+      <div style="text-align: center;">
+        {{form_login.sub}}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes style="color: red;">
+          {% for message in messages %}
+          {{ message }}
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+      </div>
 
     </form>
-    <p>Don't have an Account yet? <a href="/signup">Sign Up</a></p>
+    <p style="text-align: center;">Don't have an Account yet? <a href="/signup">Sign Up</a></p>
+    <br />
   </div>
 </body>
 
