@@ -70,6 +70,11 @@ def login():
         pass1 = form_login.pass1.data
         if request.method == 'POST':
             user = user_collection.find_one({"Email":email})
+            if user == None:
+                print("item does not exist")
+                flash('User Does not Exist, Please Sign Up.')
+                return redirect('/signup')
+
             if check_password_hash(user['Password'], pass1):
                 print("item exists")
                 session['email'] = email
@@ -77,7 +82,7 @@ def login():
                 # fname = user['First Name']
                 return redirect(url_for('home'))
             else:
-                print("item does not exist")
+                print("Invalid Credentials")
                 flash('Invalid Credentials')
                 return redirect('/login')
     return render_template("login.html", form_login=form_login)
