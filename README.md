@@ -7,7 +7,7 @@ Keep Adding coupons to redeem and avail heavy discounts!
 <br>  Made with ❤️ by Rushil Goel <br>
 
 # Deployed at
-https://coupon-share.herokuapp.com/
+https://coupon-share.up.railway.app/
 
 # How to run
 Clone the repo<br>
